@@ -13,17 +13,19 @@
  */
 var fs = require('fs'),
     path = require('path'),
-    
+
     images = require('images'),
-    
-    // todo walk through html
-    // todo find `data-preload`
-    // todo save src
-    // todo build low resolution images
-    // todo replace `src` to low resolution image paths
-    // todo replace `data-preload` to high resolution image paths
-    // todo append script before `</body>`
-    
+
+    htmlFinder = require('./lib/html-finder'),
+
+// todo walk through html
+// todo find `data-preload`
+// todo save src
+// todo build low resolution images
+// todo replace `src` to low resolution image paths
+// todo replace `data-preload` to high resolution image paths
+// todo append script before `</body>`
+
     localPath = path.join(__dirname, './'),
     imagePath = localPath + 'css/img/origin/',
     originPath = localPath + 'css/img/changed/',
@@ -60,4 +62,8 @@ var fs = require('fs'),
         });
     };
 
-explorer(imagePath);
+//explorer(imagePath);
+
+htmlFinder('.', function () {
+    console.log('--' + arguments);
+});
