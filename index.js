@@ -3,6 +3,8 @@
  * @since 150130 17:29
  * @author vivaxy
  */
+'use strict';
+
 /*
  * @Author: haoyang.li
  * @Date:   2015-08-07 11:42:26
@@ -21,6 +23,7 @@ var fs = require('fs'),
     // todo replace `src` to low resolution image paths
     // todo replace `data-preload` to high resolution image paths
     // todo append script before `</body>`
+    
     localPath = path.join(__dirname, './'),
     imagePath = localPath + 'css/img/origin/',
     originPath = localPath + 'css/img/changed/',
