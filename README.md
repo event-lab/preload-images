@@ -1,3 +1,4 @@
-# local-images
+# preload-images
+
 build-preview-images
 

@@ -1,0 +1,27 @@
+{
+    "name": "preload-images",
+    "version": "1.0.0",
+    "description": "build-preview-images",
+    "bin": {
+        "preload": "./index.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vivaxy/local-images.git"
+    },
+    "keywords": [
+        "preload"
+    ],
+    "author": "vivaxy",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/vivaxy/local-images/issues"
+    },
+    "homepage": "https://github.com/vivaxy/local-images#readme",
+    "dependencies": {
+        "images": "^2.1.6"
+    }
+}
