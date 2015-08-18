@@ -16,6 +16,7 @@ var fs = require('fs'),
 
     Log = require('log'),
     images = require('images'),
+    cheerio = require('cheerio'),
 
     log = new Log(7),
 
@@ -67,6 +68,46 @@ var fs = require('fs'),
 
 //explorer(imagePath);
 
-htmlFinder(log, '.', function (file, data) {
-    console.log('----------------', file, 'found');
+var cwd = process.cwd();
+htmlFinder(log, cwd, function (file, data) {
+    log.info('processing', file);
+    var html = data.toString();
+    var $ = cheerio.load(html);
+    $('img[data-preload]').each(function (index, img) {
+        var dataPreload = img.attribs['data-preload'];
+        var src = img.attribs.src;
+        if (path.join(path.dirname(dataPreload), 'preload') !== path.dirname(src)) { // not built
+            var absolutePath = path.join(path.dirname(file), src);
+            log.info('compressing', absolutePath);
+            var directoryPath = path.join(path.dirname(absolutePath), 'preload');
+            var preloadImagePath = directoryPath + '/' + path.basename(absolutePath);
+            try {
+                fs.mkdir(directoryPath, function (err) {
+                    if (err && err.code !== 'EEXIST') {
+                        log.error(err);
+                    } else {
+                        images(absolutePath)
+                            .size(160)
+                            .save(preloadImagePath, {
+                                quality: 10
+                            });
+                    }
+                });
+            } catch (err) {
+                log.error(err);
+            }
+            log.info('compressed', absolutePath);
+            log.debug(path.relative(path.dirname(file), absolutePath));
+            log.debug(path.relative(path.dirname(file), preloadImagePath));
+            img.attribs.src = path.relative(path.dirname(file), absolutePath);
+            img.attribs['data-preload'] = path.relative(path.dirname(file), preloadImagePath);
+        }
+    });
+    fs.writeFile(file, $.html(), function (err) {
+        if (err) {
+            log.error(err);
+        } else {
+            log.info('html built', file);
+        }
+    });
 });
