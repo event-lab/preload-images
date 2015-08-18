@@ -14,11 +14,14 @@
 var fs = require('fs'),
     path = require('path'),
 
+    Log = require('log'),
     images = require('images'),
+
+    log = new Log(7),
 
     htmlFinder = require('./lib/html-finder'),
 
-// todo walk through html
+// walk through html
 // todo find `data-preload`
 // todo save src
 // todo build low resolution images
@@ -64,6 +67,6 @@ var fs = require('fs'),
 
 //explorer(imagePath);
 
-htmlFinder('.', function () {
-    console.log('--' + arguments);
+htmlFinder(log, '.', function (file, data) {
+    console.log('----------------', file, 'found');
 });

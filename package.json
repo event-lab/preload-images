@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/vivaxy/local-images#readme",
   "dependencies": {
+    "chalk": "^1.1.0",
     "images": "^2.1.6",
+    "log": "^1.4.0",
     "q": "^1.4.1"
   }
 }
