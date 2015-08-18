@@ -19,10 +19,10 @@ var fs = require('fs'),
     scriptString = "<script>Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) { var fullSrc = img.dataset.preload, fullImg = new Image(); fullImg.addEventListener('load', function () { img.src = fullSrc;}, false); fullImg.src = fullSrc;});</script>";
 
 commander
-    .version(require('./package.json').version, '-v, --version')
-    .option('-w, --width <n>', 'set width', parseInt)
-    .option('-q, --quality <n>', 'set quality', parseInt)
+    .option('-w, --width <n>', 'set preview image width', parseInt)
+    .option('-q, --quality <n>', 'set preview image quality', parseInt)
     .option('-d, --debug', 'debug mode')
+    .version(require('./package.json').version, '-v, --version')
     .parse(process.argv);
 
 var log = new Log(commander.debug ? 7 : 5),
