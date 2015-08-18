@@ -59,5 +59,6 @@ htmlFinder(log, cwd, function (htmlFile, data) {
         });
     } else {
         log.info('html not containing preload image', htmlFile);
+        // todo output results
     }
 });

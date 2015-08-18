@@ -4,7 +4,6 @@
 [![NPM Downloads][npm-downloads-image]][npm-url]
 [![MIT License][license-image]][license-url]
 [![Dependency Status][david-image]][david-url]
-[![Gittip][gittip-image]][gittip-url]
 
 [![NPM][nodei-image]][nodei-url]
 
@@ -73,7 +72,5 @@ or
 [license-url]: LICENSE
 [david-image]: http://img.shields.io/david/vivaxy/local-images.svg?style=flat
 [david-url]: https://david-dm.org/vivaxy/local-images
-[gittip-image]: https://img.shields.io/gittip/vivaxy.svg?style=flat
-[gittip-url]: https://www.gittip.com/vivaxy/
 [nodei-image]: https://nodei.co/npm-dl/preload-images.png?height=3
 [nodei-url]: https://nodei.co/npm/preload-images/
