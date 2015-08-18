@@ -37,7 +37,9 @@ log.debug('quality', option.quality);
 htmlFinder(log, cwd, function (htmlFile, data) {
     log.info('processing', htmlFile);
     var html = data.toString(),
-        $ = cheerio.load(html);
+        $ = cheerio.load(html, {
+            decodeEntities: false
+        });
     // fix html not right problem
     html = $.html();
     $('img[data-preload]').each(function (index, img) {
@@ -57,6 +59,5 @@ htmlFinder(log, cwd, function (htmlFile, data) {
         });
     } else {
         log.info('html not containing preload image', htmlFile);
-        log.notice('done');
     }
 });
