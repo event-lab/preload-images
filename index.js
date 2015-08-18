@@ -69,6 +69,7 @@ var fs = require('fs'),
 //explorer(imagePath);
 
 var cwd = process.cwd();
+var scriptString = "<script>Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) { var fullSrc = img.dataset.preload, fullImg = new Image(); fullImg.addEventListener('load', function () { img.src = fullSrc;}, false); fullImg.src = fullSrc;});</script>";
 htmlFinder(log, cwd, function (file, data) {
     log.info('processing', file);
     var html = data.toString();
@@ -99,10 +100,13 @@ htmlFinder(log, cwd, function (file, data) {
             log.info('compressed', absolutePath);
             log.debug(path.relative(path.dirname(file), absolutePath));
             log.debug(path.relative(path.dirname(file), preloadImagePath));
-            img.attribs.src = path.relative(path.dirname(file), absolutePath);
-            img.attribs['data-preload'] = path.relative(path.dirname(file), preloadImagePath);
+            img.attribs['data-preload'] = path.relative(path.dirname(file), absolutePath);
+            img.attribs.src = path.relative(path.dirname(file), preloadImagePath);
         }
     });
+    if (!~html.indexOf(scriptString)) {
+        $('body').append(scriptString);
+    }
     fs.writeFile(file, $.html(), function (err) {
         if (err) {
             log.error(err);
