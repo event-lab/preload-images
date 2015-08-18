@@ -38,6 +38,8 @@ htmlFinder(log, cwd, function (htmlFile, data) {
     log.info('processing', htmlFile);
     var html = data.toString(),
         $ = cheerio.load(html);
+    // fix html not right problem
+    html = $.html();
     $('img[data-preload]').each(function (index, img) {
         imageBuilder(log, htmlFile, img, option);
     });
@@ -55,7 +57,6 @@ htmlFinder(log, cwd, function (htmlFile, data) {
         });
     } else {
         log.info('html not containing preload image', htmlFile);
+        log.notice('done');
     }
 });
-
-log.notice('done');
