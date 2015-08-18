@@ -27,43 +27,43 @@ and add a script to to bottom of html body
 
 ### show helps
 
-`preview -h`
+`preload -h`
 
 or
 
-`preview --help`
+`preload --help`
 
 ### set image width
 
-`preview -w 160`
+`preload -w 160`
 
 or
 
-`preview --width 160`
+`preload --width 160`
 
 ### set image quality
 
-`preview -q 10`
+`preload -q 10`
 
 or
 
-`preview --quality 10`
+`preload --quality 10`
 
 ### debug mode
 
-`preview -d`
+`preload -d`
 
 or
 
-`preview --debug`
+`preload --debug`
 
 ### show version
 
-`preview -v`
+`preload -v`
 
 or
 
-`preview --version`
+`preload --version`
 
 [npm-version-image]: http://img.shields.io/npm/v/preload-images.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/preload-images
