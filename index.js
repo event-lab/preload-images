@@ -17,59 +17,27 @@ var fs = require('fs'),
     Log = require('log'),
     images = require('images'),
     cheerio = require('cheerio'),
-
-    log = new Log(7),
+    commander = require('commander'),
 
     htmlFinder = require('./lib/html-finder'),
 
-// walk through html
-// todo find `data-preload`
-// todo save src
-// todo build low resolution images
-// todo replace `src` to low resolution image paths
-// todo replace `data-preload` to high resolution image paths
-// todo append script before `</body>`
+    cwd = process.cwd(),
+    scriptString = "<script>Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) { var fullSrc = img.dataset.preload, fullImg = new Image(); fullImg.addEventListener('load', function () { img.src = fullSrc;}, false); fullImg.src = fullSrc;});</script>";
 
-    localPath = path.join(__dirname, './'),
-    imagePath = localPath + 'css/img/origin/',
-    originPath = localPath + 'css/img/changed/',
+commander
+    .version(require('./package.json').version, '-v --version')
+    .option('-w, --width <n>', 'set width', parseInt)
+    .option('-q, --quality <n>', 'set quality', parseInt)
+    .option('-d, --debug', 'debug mode')
+    .parse(process.argv);
 
-    explorer = function (imagePath) {
-        fs.readdir(imagePath, function (err, files) {
-            if (err) {
-                console.log('error:\n' + err);
-                return;
-            }
-            files.forEach(function (file) {
-                fs.stat(imagePath + '/' + file, function (err, stat) {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    }
-                    if (stat.isDirectory()) {
-                        // explorer(imagePath + '/' + file);
-                    } else {
-                        if (!fs.existsSync(originPath)) {
-                            fs.mkdirSync(originPath);
-                        }
-                        if (file.match(/\.jpg/)) {
-                            images(imagePath + '/' + file)
-                                .size(160)
-                                .save(originPath + file, {
-                                    quality: 10
-                                });
-                            console.log(file + "change success;");
-                        }
-                    }
-                });
-            });
-        });
-    };
+var log = new Log(commander.debug ? 7 : 5),
+    width = commander.width || 160,
+    quality = commander.quality || 10;
 
-//explorer(imagePath);
+log.info('width', width);
+log.info('quality', quality);
 
-var cwd = process.cwd();
-var scriptString = "<script>Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) { var fullSrc = img.dataset.preload, fullImg = new Image(); fullImg.addEventListener('load', function () { img.src = fullSrc;}, false); fullImg.src = fullSrc;});</script>";
 htmlFinder(log, cwd, function (file, data) {
     log.info('processing', file);
     var html = data.toString();
@@ -88,9 +56,9 @@ htmlFinder(log, cwd, function (file, data) {
                         log.error(err);
                     } else {
                         images(absolutePath)
-                            .size(160)
+                            .size(width)
                             .save(preloadImagePath, {
-                                quality: 10
+                                quality: quality
                             });
                     }
                 });
@@ -102,16 +70,19 @@ htmlFinder(log, cwd, function (file, data) {
             log.debug(path.relative(path.dirname(file), preloadImagePath));
             img.attribs['data-preload'] = path.relative(path.dirname(file), absolutePath);
             img.attribs.src = path.relative(path.dirname(file), preloadImagePath);
+        } else {
+            log.info('already built from', dataPreload, 'to', src);
         }
     });
     if (!~html.indexOf(scriptString)) {
         $('body').append(scriptString);
+        log.info('script appended', file);
     }
     fs.writeFile(file, $.html(), function (err) {
         if (err) {
             log.error(err);
         } else {
-            log.info('html built', file);
+            log.notice('html built', file);
         }
     });
 });
