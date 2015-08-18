@@ -66,14 +66,14 @@ or
 
 `preview --version`
 
-[npm-version-image]: http://img.shields.io/npm/v/preview-images.svg?style=flat
-[npm-url]: https://www.npmjs.com/package/preview-images
-[npm-downloads-image]: http://img.shields.io/npm/dm/preview-images.svg?style=flat
+[npm-version-image]: http://img.shields.io/npm/v/preload-images.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/preload-images
+[npm-downloads-image]: http://img.shields.io/npm/dm/preload-images.svg?style=flat
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE
 [david-image]: http://img.shields.io/david/vivaxy/local-images.svg?style=flat
 [david-url]: https://david-dm.org/vivaxy/local-images
 [gittip-image]: https://img.shields.io/gittip/vivaxy.svg?style=flat
 [gittip-url]: https://www.gittip.com/vivaxy/
-[nodei-image]: https://nodei.co/npm-dl/preview-images.png?height=3
-[nodei-url]: https://nodei.co/npm/preview-images/
+[nodei-image]: https://nodei.co/npm-dl/preload-images.png?height=3
+[nodei-url]: https://nodei.co/npm/preload-images/
