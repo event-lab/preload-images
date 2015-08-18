@@ -1,6 +1,6 @@
 {
   "name": "preload-images",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "build-preview-images",
   "bin": {
     "preload": "./index.js"
@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/vivaxy/local-images#readme",
   "dependencies": {
-    "chalk": "^1.1.0",
     "cheerio": "^0.19.0",
     "commander": "^2.8.1",
     "images": "^2.1.6",
