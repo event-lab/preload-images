@@ -8,7 +8,7 @@
 
 var fs = require('fs'),
 
-    Log = require('log'),
+    Log = require('log-util'),
     cheerio = require('cheerio'),
     commander = require('commander'),
 
@@ -25,14 +25,14 @@ commander
     .version(require('./package.json').version, '-v, --version')
     .parse(process.argv);
 
-var log = new Log(commander.debug ? 7 : 5),
+var log = new Log(commander.debug ? 0 : 2),
     option = {
         width: commander.width || 160,
         quality: commander.quality || 10
     };
 
-log.notice('image compression width', option.width);
-log.notice('image compression quality', option.quality);
+log.info('image compression width', option.width);
+log.info('image compression quality', option.quality);
 
 htmlFinder(log, cwd, function (htmlFile, data) {
     log.info('processing', htmlFile);
@@ -54,7 +54,7 @@ htmlFinder(log, cwd, function (htmlFile, data) {
             if (err) {
                 log.error(err);
             } else {
-                log.notice('html saved', htmlFile);
+                log.info('html saved', htmlFile);
             }
         });
     } else {
