@@ -19,7 +19,7 @@ In your local folder, `preload`.
 
 This will change html:
 
-`<img src="some.jpg" data-preload="">` to `<img src="some-small.jpg" data-preload="some.jpg" data-preload-origin="some.jpg">`
+`<img src="some.jpg" data-preload>` to `<img src="some-small.jpg" data-preload="some.jpg" data-preload-origin="some.jpg">`
 
 and add a script `<script data-preload="">` to the bottom of html body
 
