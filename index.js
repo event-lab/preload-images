@@ -16,7 +16,7 @@ var fs = require('fs'),
     imageBuilder = require('./lib/image-builder'),
 
     cwd = process.cwd(),
-    scriptString = "<script>Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) { var fullSrc = img.dataset.preload, fullImg = new Image(); fullImg.addEventListener('load', function () { img.src = fullSrc;}, false); fullImg.src = fullSrc;});</script>";
+    scriptString = "<script data-preload>Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) { var fullSrc = img.dataset.preload, fullImg = new Image(); fullImg.addEventListener('load', function () { img.src = fullSrc;}, false); fullImg.src = fullSrc;});</script>";
 
 commander
     .option('-w, --width <n>', 'set preview image width', parseInt)
@@ -31,8 +31,8 @@ var log = new Log(commander.debug ? 7 : 5),
         quality: commander.quality || 10
     };
 
-log.debug('width', option.width);
-log.debug('quality', option.quality);
+log.notice('image compression width', option.width);
+log.notice('image compression quality', option.quality);
 
 htmlFinder(log, cwd, function (htmlFile, data) {
     log.info('processing', htmlFile);
@@ -46,7 +46,7 @@ htmlFinder(log, cwd, function (htmlFile, data) {
         imageBuilder(log, htmlFile, img, option);
     });
     if ($.html() !== html) {
-        if (!~html.indexOf(scriptString)) {
+        if (!$('script[data-preload]').length) {
             $('body').append(scriptString);
             log.info('script appended', htmlFile);
         }

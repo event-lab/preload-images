@@ -15,13 +15,13 @@ build preload images for events
 
 ## usage
 
-In your local folder, `> preload`.
+In your local folder, `preload`.
 
 This will change html:
 
-`<img src="some.jpg" data-preload="">` to `<img src="some-small.jpg" data-preload="some.jpg">`
+`<img src="some.jpg" data-preload="">` to `<img src="some-small.jpg" data-preload="some.jpg" data-preload-origin="some.jpg">`
 
-and add a script to the bottom of html body
+and add a script `<script data-preload="">` to the bottom of html body
 
 ## advanced usage
 
@@ -35,6 +35,8 @@ or
 
 ### set image width
 
+default width 160
+
 `preload -w 160`
 
 or
@@ -42,6 +44,8 @@ or
 `preload --width 160`
 
 ### set image quality
+
+default quality 10
 
 `preload -q 10`
 
