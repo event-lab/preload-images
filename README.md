@@ -74,7 +74,7 @@ or
 [npm-downloads-image]: http://img.shields.io/npm/dm/preload-images.svg?style=flat
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE
-[david-image]: http://img.shields.io/david/vivaxy/preload-images.svg?style=flat
-[david-url]: https://david-dm.org/vivaxy/preload-images
+[david-image]: http://img.shields.io/david/event-lab/preload-images.svg?style=flat
+[david-url]: https://david-dm.org/event-lab/preload-images
 [nodei-image]: https://nodei.co/npm-dl/preload-images.png?height=3
 [nodei-url]: https://nodei.co/npm/preload-images/
