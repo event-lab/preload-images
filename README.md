@@ -11,7 +11,7 @@ build preload images for events
 
 ## installation
 
-`sudo npm install -g preload-images`
+`[sudo] npm install -g preload-images`
 
 ## usage
 
@@ -21,7 +21,7 @@ This will change html:
 
 `<img src="some.jpg" data-preload="">` to `<img src="some-small.jpg" data-preload="some.jpg">`
 
-and add a script to to bottom of html body
+and add a script to the bottom of html body
 
 ## advanced usage
 
