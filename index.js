@@ -7,16 +7,17 @@
 'use strict';
 
 var fs = require('fs'),
+    path = require('path'),
 
     Log = require('log-util'),
     cheerio = require('cheerio'),
     commander = require('commander'),
 
     htmlFinder = require('./lib/html-finder'),
+    htmlBuilder = require('./lib/html-builder'),
     imageBuilder = require('./lib/image-builder'),
 
-    cwd = process.cwd(),
-    scriptString = "<script data-preload>Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) { var fullSrc = img.dataset.preload, fullImg = new Image(); fullImg.addEventListener('load', function () { img.src = fullSrc;}, false); fullImg.src = fullSrc;});</script>";
+    cwd = process.cwd();
 
 commander
     .option('-w, --width <n>', 'set preview image width', parseInt)
@@ -26,39 +27,38 @@ commander
     .parse(process.argv);
 
 var log = new Log(commander.debug ? 0 : 2),
-    option = {
+    imagesOptions = {
         width: commander.width || 160,
         quality: commander.quality || 10
     };
 
-log.info('image compression width', option.width);
-log.info('image compression quality', option.quality);
+log.info('image compression width', imagesOptions.width);
+log.info('image compression quality', imagesOptions.quality);
 
 htmlFinder(log, cwd, function (htmlFile, data) {
-    log.info('processing', htmlFile);
+    log.info('html found', htmlFile);
     var html = data.toString(),
         $ = cheerio.load(html, {
             decodeEntities: false
         });
-    // fix html not right problem
-    html = $.html();
+    // fix html format error problem
     $('img[data-preload]').each(function (index, img) {
-        imageBuilder(log, htmlFile, img, option);
+        imageBuilder(log, htmlFile, img, imagesOptions);
     });
-    if ($.html() !== html) {
-        if (!$('script[data-preload]').length) {
-            $('body').append(scriptString);
-            log.info('script appended', htmlFile);
-        }
-        fs.writeFile(htmlFile, $.html(), function (err) {
+    if (!$('script[data-preload]').length) {
+        fs.readFile(path.join(__dirname, './res/preload.js'), 'utf-8', function (err, data) {
             if (err) {
                 log.error(err);
             } else {
-                log.info('html saved', htmlFile);
+                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(data));
+                $ = cheerio.load($.html(), {
+                    decodeEntities: false
+                });
+                log.info('script appended', htmlFile);
+                htmlBuilder(log, htmlFile, $);
             }
         });
     } else {
-        log.info('html not containing preload image', htmlFile);
-        // todo output results
+        htmlBuilder(log, htmlFile, $);
     }
 });
