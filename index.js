@@ -50,10 +50,7 @@ htmlFinder(log, cwd, function (htmlFile, data) {
             if (err) {
                 log.error(err);
             } else {
-                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(data));
-                $ = cheerio.load($.html(), {
-                    decodeEntities: false
-                });
+                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(data)).append('\n');
                 log.info('script appended', htmlFile);
                 htmlBuilder(log, htmlFile, $);
             }
