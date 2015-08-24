@@ -1,6 +1,6 @@
 {
   "name": "preload-images",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "build preload images",
   "bin": {
     "preload": "./index.js"
@@ -24,7 +24,9 @@
   "dependencies": {
     "cheerio": "^0.19.0",
     "commander": "^2.8.1",
+    "glob": "^5.0.14",
     "images": "^2.1.6",
-    "log-util": "^1.0.0"
+    "log-util": "^1.0.2",
+    "usage-tracker": "^1.0.0"
   }
 }

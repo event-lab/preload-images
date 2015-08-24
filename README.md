@@ -61,6 +61,14 @@ or
 
 `preload --debug`
 
+### specify html file
+
+`preload -f ./index.html`
+
+or
+
+`preload --file ./index.html`
+
 ### show version
 
 `preload -v`
