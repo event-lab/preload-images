@@ -36,7 +36,7 @@ var fs = require('fs'),
                 owner: 'event-lab',
                 repo: 'preload-images',
                 number: 7,
-                token: '8b76d34defde2774cc0bf9b2a22eb936ecb1b09a',
+                token: '96641ce80349b78555b6a016bd66221683fce8f0',
                 log: log,
                 report: {
                     // time
