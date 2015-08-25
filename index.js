@@ -10,11 +10,11 @@ var fs = require('fs'),
     path = require('path'),
 
     glob = require('glob'),
-    Log = require('log-util'),
+    log = require('log-util'),
     moment = require('moment'),
     cheerio = require('cheerio'),
     commander = require('commander'),
-    UsageTracker = require('usage-tracker'),
+    usageTracker = require('usage-tracker'),
 
     htmlBuilder = require('./lib/html-builder'),
     imageBuilder = require('./lib/image-builder'),
@@ -28,36 +28,36 @@ var fs = require('fs'),
             .version(require('./package.json').version, '-v, --version')
             .parse(process.argv);
 
-        var log = new Log(commander.debug ? 0 : 2),
-            imagesOptions = {
-                width: commander.width || 160,
-                quality: commander.quality || 10
-            },
-            usageTracker = new UsageTracker({
-                owner: 'event-lab',
-                repo: 'preload-images',
-                number: 7,
-                token: require(path.join(__dirname, 'package.json')).reporter.split('').reverse().join(''),
-                log: log,
-                report: {
-                    // time
-                    timestamp: new Date().getTime(),
-                    time: moment().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
-                    // process
-                    arch: process.arch,
-                    platform: process.platform,
-                    version: process.version,
-                    versions: process.versions,
-                    argv: process.argv,
-                    cwd: process.cwd()
-                }
-            });
-
+        log.setLevel(commander.debug ? 0 : 2);
+        usageTracker.initialize({
+            owner: 'event-lab',
+            repo: 'preload-images',
+            number: 7,
+            token: require(path.join(__dirname, 'package.json')).reporter.split('').reverse().join(''),
+            log: log,
+            report: {
+                // time
+                timestamp: new Date().getTime(),
+                time: moment().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+                // process
+                arch: process.arch,
+                platform: process.platform,
+                version: process.version,
+                versions: process.versions,
+                argv: process.argv,
+                cwd: process.cwd()
+            }
+        });
         usageTracker.send({
             // event
             event: 'used'
         });
-
+        
+        var imagesOptions = {
+            width: commander.width || 160,
+            quality: commander.quality || 10
+        };
+        
         log.info('image compression width', imagesOptions.width);
         log.info('image compression quality', imagesOptions.quality);
 
@@ -92,7 +92,7 @@ var fs = require('fs'),
                         });
                     // fix html format error problem
                     $('img[data-preload]').each(function (index, img) {
-                        imageBuilder(log, htmlFile, img, imagesOptions);
+                        imageBuilder(htmlFile, img, imagesOptions);
                     });
                     if (!$('script[data-preload]').length) {
                         fs.readFile(path.join(__dirname, './res/preload.js'), 'utf-8', function (err, data) {
@@ -101,11 +101,11 @@ var fs = require('fs'),
                             } else {
                                 $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(data)).append('\n');
                                 log.info('script appended', htmlFile);
-                                htmlBuilder(log, htmlFile, $);
+                                htmlBuilder(htmlFile, $);
                             }
                         });
                     } else {
-                        htmlBuilder(log, htmlFile, $);
+                        htmlBuilder(htmlFile, $);
                     }
                 }
             });
