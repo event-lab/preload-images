@@ -1,6 +1,6 @@
 {
   "name": "preload-images",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "build preload images",
   "bin": {
     "preload": "./index.js"
@@ -27,6 +27,7 @@
     "glob": "^5.0.14",
     "images": "^2.1.6",
     "log-util": "^1.0.2",
+    "moment": "^2.10.6",
     "usage-tracker": "^1.0.0"
   }
 }

@@ -11,6 +11,7 @@ var fs = require('fs'),
 
     glob = require('glob'),
     Log = require('log-util'),
+    moment = require('moment'),
     cheerio = require('cheerio'),
     commander = require('commander'),
     UsageTracker = require('usage-tracker'),
@@ -41,7 +42,7 @@ var fs = require('fs'),
                 report: {
                     // time
                     timestamp: new Date().getTime(),
-                    time: new Date().toString(),
+                    time: moment().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
                     // process
                     arch: process.arch,
                     platform: process.platform,
