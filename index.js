@@ -20,8 +20,7 @@ var fs = require('fs'),
     imageBuilder = require('./lib/image-builder'),
 
     main = function () {
-        var htmlCount = 0,
-            imageCount = 0;
+
         commander
             .option('-w, --width <n>', 'set preview image width', parseInt)
             .option('-q, --quality <n>', 'set preview image quality', parseInt)
@@ -55,15 +54,17 @@ var fs = require('fs'),
             event: 'used'
         });
 
-        var imagesOptions = {
-            width: commander.width || 160,
-            quality: commander.quality || 10
-        };
+        var htmlCount = 0,
+            imageCount = 0,
+            htmlFiles = [],
+            imagesOptions = {
+                width: commander.width || 160,
+                quality: commander.quality || 10
+            };
 
         log.debug('image compression width', imagesOptions.width);
         log.debug('image compression quality', imagesOptions.quality);
 
-        var htmlFiles = [];
         switch (commander.file) {
             case undefined:
                 htmlFiles = glob.sync('./**/*.html', {
