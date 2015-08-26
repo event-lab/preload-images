@@ -11,7 +11,6 @@ var fs = require('fs'),
 
     glob = require('glob'),
     log = require('log-util'),
-    moment = require('moment'),
     cheerio = require('cheerio'),
     commander = require('commander'),
     usageTracker = require('usage-tracker'),
@@ -35,19 +34,7 @@ var fs = require('fs'),
             repo: 'preload-images',
             number: 7,
             token: require(path.join(__dirname, 'package.json')).reporter.split('').reverse().join(''),
-            log: log,
-            report: {
-                // time
-                timestamp: new Date().getTime(),
-                time: moment().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
-                // process
-                arch: process.arch,
-                platform: process.platform,
-                version: process.version,
-                versions: process.versions,
-                argv: process.argv,
-                cwd: process.cwd()
-            }
+            log: log
         });
         usageTracker.send({
             // event

@@ -9,6 +9,7 @@ Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), fun
         fullImg = new Image();
     fullImg.addEventListener('load', function () {
         img.src = fullSrc;
+        img.removeAttribute('data-preload');
     }, false);
     fullImg.src = fullSrc;
 });
