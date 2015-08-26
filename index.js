@@ -20,6 +20,8 @@ var fs = require('fs'),
     imageBuilder = require('./lib/image-builder'),
 
     main = function () {
+        var htmlCount = 0,
+            imageCount = 0;
         commander
             .option('-w, --width <n>', 'set preview image width', parseInt)
             .option('-q, --quality <n>', 'set preview image quality', parseInt)
@@ -52,14 +54,14 @@ var fs = require('fs'),
             // event
             event: 'used'
         });
-        
+
         var imagesOptions = {
             width: commander.width || 160,
             quality: commander.quality || 10
         };
-        
-        log.info('image compression width', imagesOptions.width);
-        log.info('image compression quality', imagesOptions.quality);
+
+        log.debug('image compression width', imagesOptions.width);
+        log.debug('image compression quality', imagesOptions.quality);
 
         var htmlFiles = [];
         switch (commander.file) {
@@ -82,33 +84,29 @@ var fs = require('fs'),
 
         log.debug('html found', htmlFiles.join(', '));
         htmlFiles.forEach(function (htmlFile) {
-            fs.readFile(htmlFile, 'utf-8', function (err, data) {
-                if (err) {
-                    log.error(err);
-                } else {
-                    var html = data.toString(),
-                        $ = cheerio.load(html, {
-                            decodeEntities: false
-                        });
-                    // fix html format error problem
-                    $('img[data-preload]').each(function (index, img) {
-                        imageBuilder(htmlFile, img, imagesOptions);
-                    });
-                    if (!$('script[data-preload]').length) {
-                        fs.readFile(path.join(__dirname, './res/preload.js'), 'utf-8', function (err, data) {
-                            if (err) {
-                                log.error(err);
-                            } else {
-                                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(data)).append('\n');
-                                log.info('script appended', htmlFile);
-                                htmlBuilder(htmlFile, $);
-                            }
-                        });
-                    } else {
-                        htmlBuilder(htmlFile, $);
-                    }
-                }
+            htmlCount++;
+            var data = fs.readFileSync(htmlFile, 'utf-8');
+            var html = data.toString(),
+                $ = cheerio.load(html, {
+                    decodeEntities: false
+                });
+            // fix html format error problem
+            $('img[data-preload]').each(function (index, img) {
+                imageBuilder(htmlFile, img, imagesOptions, function () {
+                    imageCount++;
+                });
             });
+            if (!$('script[data-preload]').length) {
+                var preloadJsData = fs.readFile(path.join(__dirname, './res/preload.js'), 'utf-8');
+                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(preloadJsData)).append('\n');
+                log.debug('script appended', htmlFile);
+                htmlBuilder(htmlFile, $);
+            } else {
+                htmlBuilder(htmlFile, $);
+            }
+            if (htmlCount === htmlFiles.length) {
+                log.info(htmlCount, 'html found,', imageCount, 'images preloaded.');
+            }
         });
     };
 
