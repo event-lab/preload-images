@@ -85,30 +85,30 @@ var fs = require('fs'),
 
         log.debug('html found', htmlFiles.join(', '));
         htmlFiles.forEach(function (htmlFile) {
-            htmlCount++;
-            var data = fs.readFileSync(htmlFile, 'utf-8');
-            var html = data.toString(),
+            var data = fs.readFileSync(htmlFile, 'utf-8'),
+                html = data.toString(),
                 $ = cheerio.load(html, {
                     decodeEntities: false
+                }),
+                $images = $('img[data-preload]');
+            if ($images.length > 0) {
+                $images.each(function (index, img) {
+                    imageBuilder(htmlFile, img, imagesOptions, function () {
+                        imageCount++;
+                    });
                 });
-            // fix html format error problem
-            $('img[data-preload]').each(function (index, img) {
-                imageBuilder(htmlFile, img, imagesOptions, function () {
-                    imageCount++;
-                });
-            });
-            if (!$('script[data-preload]').length) {
-                var preloadJsData = fs.readFile(path.join(__dirname, './res/preload.js'), 'utf-8');
-                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(preloadJsData)).append('\n');
-                log.debug('script appended', htmlFile);
-                htmlBuilder(htmlFile, $);
-            } else {
-                htmlBuilder(htmlFile, $);
-            }
-            if (htmlCount === htmlFiles.length) {
-                log.info(htmlCount, 'html found,', imageCount, 'images preloaded.');
+                if (!$('script[data-preload]').length) {
+                    var preloadJsData = fs.readFileSync(path.join(__dirname, './res/preload.js'), 'utf-8');
+                    $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(preloadJsData)).append('\n');
+                    log.debug('script appended', htmlFile);
+                    htmlBuilder(htmlFile, $);
+                } else {
+                    htmlBuilder(htmlFile, $);
+                }
+                htmlCount++;
             }
         });
+        log.info(htmlFiles.length, 'html found,', htmlCount, 'html built,', imageCount, 'images preloaded.');
     };
 
 main();
