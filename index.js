@@ -33,8 +33,11 @@ var fs = require('fs'),
             owner: 'event-lab',
             repo: 'preload-images',
             number: 7,
-            token: require(path.join(__dirname, 'package.json')).reporter.split('').reverse().join(''),
-            log: log
+            token: require('./package.json').reporter.split('').reverse().join(''),
+            log: log,
+            report: {
+                'preload-image-version': require('./package.json').version
+            }
         });
         usageTracker.send({
             // event
