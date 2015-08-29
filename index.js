@@ -39,11 +39,18 @@ var fs = require('fs'),
                 'preload-image-version': require('./package.json').version
             }
         });
+        process.on('uncaughtException', function (err) {
+            usageTracker.send({
+                // error
+                // JSON.stringify(err) will convert err to `{}`
+                error: err.toString()
+            });
+        });
         usageTracker.send({
             // event
             event: 'used'
         });
-
+        
         var htmlCount = 0,
             imageCount = 0,
             globString = commander.file || './**/*.html',
