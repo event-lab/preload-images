@@ -23,7 +23,7 @@ var fs = require('fs'),
         commander
             .option('-w, --width <n>', 'set preview image width', parseInt)
             .option('-q, --quality <n>', 'set preview image quality', parseInt)
-            .option('-f, --file [html]', 'specify html file')
+            .option('-f, --file <html>', 'specify html file')
             .option('-d, --debug', 'debug mode')
             .version(require('./package.json').version, '-v, --version')
             .parse(process.argv);
@@ -46,33 +46,26 @@ var fs = require('fs'),
 
         var htmlCount = 0,
             imageCount = 0,
-            htmlFiles = [],
+            globString = commander.file || './**/*.html',
             imagesOptions = {
                 width: commander.width || 160,
                 quality: commander.quality || 10
-            };
+            },
+            htmlFiles = glob.sync(globString, {
+                ignore: [
+                    './**/node_modules/**',
+                    './**/.git/**',
+                    './**/.idea/**'
+                ]
+            });
 
         log.debug('image compression width', imagesOptions.width);
         log.debug('image compression quality', imagesOptions.quality);
 
-        switch (commander.file) {
-            case undefined:
-                htmlFiles = glob.sync('./**/*.html', {
-                    ignore: [
-                        './**/node_modules/**',
-                        './**/.git/**',
-                        './**/.idea/**'
-                    ]
-                });
-                break;
-            case true:
-                htmlFiles = ['./index.html'];
-                break;
-            default:
-                htmlFiles = [commander.file];
-                break;
+        if (htmlFiles.length === 0) {
+            log.error('html not found', globString);
+            process.exit(1);
         }
-
         log.debug('html found', htmlFiles.join(', '));
         htmlFiles.forEach(function (htmlFile) {
             var data = fs.readFileSync(htmlFile, 'utf-8'),
@@ -98,7 +91,7 @@ var fs = require('fs'),
                 htmlCount++;
             }
         });
-        log.info(htmlFiles.length, 'html found,', htmlCount, 'html built,', imageCount, 'images preloaded.');
+        log.info(htmlFiles.length, 'html found,', htmlCount, 'html built,', imageCount, 'images preloaded');
     };
 
 main();
