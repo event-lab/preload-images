@@ -1,6 +1,6 @@
 {
   "name": "preload-images",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "build preload images",
   "bin": {
     "preload": "./index.js"

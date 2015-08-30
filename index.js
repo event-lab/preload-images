@@ -45,7 +45,7 @@ var fs = require('fs'),
                 // JSON.stringify(err) will convert err to `{}`
                 error: err.toString()
             });
-            // throw this to preserve program actions
+            // throw this to preserve default behaviour
             throw err;
         });
         usageTracker.send({
