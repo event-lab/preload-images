@@ -5,9 +5,9 @@
   "bin": {
     "preload": "./index.js"
   },
-    "engines": {
-        "node": "*"
-    },
+  "engines": {
+    "node": "*"
+  },
   "scripts": {
     "test": "node ./index.js"
   },
@@ -19,12 +19,12 @@
     "preload"
   ],
   "author": "vivaxy",
-    "contributors": [
-        {
-            "name": "vivaxy",
-            "email": "xyxuye2007@126.com"
-        }
-    ],
+  "contributors": [
+    {
+      "name": "vivaxy",
+      "email": "xyxuye2007@126.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/event-lab/preload-images/issues"
@@ -36,7 +36,7 @@
     "glob": "^5.0.14",
     "images": "^2.1.6",
     "log-util": "^1.1.0",
-    "usage-tracker": "^1.1.1"
+    "usage-tracker": "^1.1.2"
   },
   "usage-tracker-id": "0f8ecf38612266db610a6b55587b94308ec14669"
 }
