@@ -45,12 +45,14 @@ var fs = require('fs'),
                 // JSON.stringify(err) will convert err to `{}`
                 error: err.toString()
             });
+            // throw this to preserve program actions
+            throw err;
         });
         usageTracker.send({
             // event
             event: 'used'
         });
-        
+
         var htmlCount = 0,
             imageCount = 0,
             globString = commander.file || './**/*.html',
