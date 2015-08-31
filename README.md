@@ -15,13 +15,13 @@ build preload images for events
 
 ## usage
 
-In your local folder, `preload`.
+In your project folder, `preload`.
 
-This will change html:
+This will change your html files to:
 
 `<img src="some.jpg" data-preload>` to `<img src="some-small.jpg" data-preload="some.jpg" data-preload-origin="some.jpg">`
 
-and add a script `<script data-preload="">` to the bottom of html body
+And add a script `<script data-preload="">` to the bottom of html body.
 
 ## advanced usage
 
@@ -53,14 +53,6 @@ or
 
 `preload --quality 10`
 
-### debug mode
-
-`preload -d`
-
-or
-
-`preload --debug`
-
 ### specify html file
 
 `preload -f ./index.html`
@@ -68,6 +60,14 @@ or
 or
 
 `preload --file ./index.html`
+
+### debug mode
+
+`preload -d`
+
+or
+
+`preload --debug`
 
 ### show version
 
