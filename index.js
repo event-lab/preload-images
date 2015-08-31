@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * @since 150130 17:29
  * @author vivaxy
@@ -18,8 +19,7 @@ var fs = require('fs'),
     htmlBuilder = require('./lib/html-builder'),
     imageBuilder = require('./lib/image-builder'),
 
-    main = function () {
-
+    main = function() {
         commander
             .option('-w, --width <n>', 'set preview image width', parseInt)
             .option('-q, --quality <n>', 'set preview image quality', parseInt)
@@ -39,7 +39,7 @@ var fs = require('fs'),
                 'preload-image-version': require('./package.json').version
             }
         });
-        process.on('uncaughtException', function (e) {
+        process.on('uncaughtException', function(e) {
             usageTracker.send({
                 // JSON.stringify(err) will convert err to `{}`
                 // use error.stack for more details
@@ -80,7 +80,7 @@ var fs = require('fs'),
             process.exit(1);
         }
         log.debug('html found', htmlFiles.join(', '));
-        htmlFiles.forEach(function (htmlFile) {
+        htmlFiles.forEach(function(htmlFile) {
             var data = fs.readFileSync(htmlFile, 'utf-8'),
                 html = data.toString(),
                 $ = cheerio.load(html, {
@@ -88,8 +88,8 @@ var fs = require('fs'),
                 }),
                 $images = $('img[data-preload]');
             if ($images.length > 0) {
-                $images.each(function (index, img) {
-                    imageBuilder(htmlFile, img, imagesOptions, function () {
+                $images.each(function(index, img) {
+                    imageBuilder(htmlFile, img, imagesOptions, function() {
                         imageCount++;
                     });
                 });
