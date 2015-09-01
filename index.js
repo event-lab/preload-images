@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 /**
  * @since 150130 17:29
  * @author vivaxy
@@ -20,6 +19,7 @@ var fs = require('fs'),
     imageBuilder = require('./lib/image-builder'),
 
     main = function () {
+        // init arguments
         commander
             .option('-w, --width <n>', 'set preview image width', parseInt)
             .option('-q, --quality <n>', 'set preview image quality', parseInt)
@@ -28,7 +28,10 @@ var fs = require('fs'),
             .version(require('./package.json').version, '-v, --version')
             .parse(process.argv);
 
+        // init log
         log.setLevel(commander.debug ? 0 : 2);
+        
+        // init usage tracker
         usageTracker.initialize({
             owner: 'event-lab',
             repo: 'preload-images',
@@ -39,24 +42,37 @@ var fs = require('fs'),
                 'preload-image-version': require('./package.json').version
             }
         });
+        // report error
         process.on('uncaughtException', function (e) {
-            usageTracker.send({
-                // JSON.stringify(err) will convert err to `{}`
-                // use error.stack for more details
-                // todo how to preserve the original error output format?
-                error: e.stack.split('\n')
-            });
+            new usageTracker.UsageTracker({
+                owner: 'event-lab',
+                repo: 'preload-images',
+                number: 8,
+                token: require('./package.json')['usage-tracker-id'].split('').reverse().join(''),
+                report: {
+                    'preload-image-version': require('./package.json').version
+                }
+            }).on('end', function () {
+                    process.exit(1);
+                }).on('err', function () {
+                    process.exit(1);
+                }).send({
+                    // JSON.stringify(err) will convert err to `{}`
+                    // use error.stack for more details
+                    error: e.stack.split('\n')
+                });
             // throw this to preserve default behaviour
             // console this instead of throw error to keep the original error trace
             log.error(e.stack);
             // still exit as uncaught exception
-            process.exit(1);
         });
+        // report usage
         usageTracker.send({
             // event
             event: 'used'
         });
 
+        // main
         var htmlCount = 0,
             imageCount = 0,
             globString = commander.file || './**/*.html',
