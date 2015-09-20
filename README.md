@@ -77,12 +77,12 @@ or
 
 `preload --version`
 
-[npm-version-image]: http://img.shields.io/npm/v/preload-images.svg?style=flat
+[npm-version-image]: http://img.shields.io/npm/v/preload-images.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/preload-images
-[npm-downloads-image]: http://img.shields.io/npm/dm/preload-images.svg?style=flat
-[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[npm-downloads-image]: http://img.shields.io/npm/dm/preload-images.svg?style=flat-square
+[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE
-[david-image]: http://img.shields.io/david/event-lab/preload-images.svg?style=flat
+[david-image]: http://img.shields.io/david/event-lab/preload-images.svg?style=flat-square
 [david-url]: https://david-dm.org/event-lab/preload-images
 [nodei-image]: https://nodei.co/npm-dl/preload-images.png?height=3
 [nodei-url]: https://nodei.co/npm/preload-images/
