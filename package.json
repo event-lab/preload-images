@@ -34,7 +34,7 @@
     "cheerio": "^0.19.0",
     "commander": "^2.8.1",
     "glob": "^5.0.14",
-    "images": "^2.1.6",
+    "jimp": "^0.2.7",
     "log-util": "^1.1.0",
     "usage-tracker": "^1.1.4"
   },
