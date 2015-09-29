@@ -7,6 +7,8 @@
 
 [![NPM][nodei-image]][nodei-url]
 
+[![NPM][nodei-dl-image]][nodei-url]
+
 build preload images for events
 
 ## installation
@@ -84,5 +86,6 @@ or
 [license-url]: LICENSE
 [david-image]: http://img.shields.io/david/event-lab/preload-images.svg?style=flat-square
 [david-url]: https://david-dm.org/event-lab/preload-images
-[nodei-image]: https://nodei.co/npm-dl/preload-images.png?height=3
+[nodei-dl-image]: https://nodei.co/npm-dl/preload-images.png?height=3
 [nodei-url]: https://nodei.co/npm/preload-images/
+[nodei-image]: https://nodei.co/npm/preload-images.svg?downloads=true&downloadRank=true&stars=true
