@@ -5,8 +5,8 @@
  */
 'use strict';
 Array.prototype.forEach.call(document.querySelectorAll('img[data-preload]'), function (img) {
-    var fullSrc = img.dataset.preload,
-        fullImg = new Image();
+    var fullSrc = img.dataset.preload;
+    var fullImg = new Image();
     fullImg.addEventListener('load', function () {
         img.src = fullSrc;
     }, false);
