@@ -9,6 +9,7 @@
     "node": "*"
   },
   "scripts": {
+    "pretest": "eslint --fix ./index.js ./lib/*.js",
     "test": "node ./index.js"
   },
   "repository": {
@@ -38,5 +39,8 @@
     "log-util": "^1.1.0",
     "usage-tracker": "^1.1.4"
   },
-  "usage-tracker-id": "0f8ecf38612266db610a6b55587b94308ec14669"
+  "usage-tracker-id": "0f8ecf38612266db610a6b55587b94308ec14669",
+  "devDependencies": {
+    "eslint": "^1.10.3"
+  }
 }

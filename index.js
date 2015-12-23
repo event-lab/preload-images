@@ -5,6 +5,7 @@
  * @author vivaxy
  * @inspired-by haoyang.li
  */
+
 'use strict';
 
 var fs = require('fs');
@@ -19,44 +20,39 @@ var usageTracker = require('usage-tracker');
 var htmlBuilder = require('./lib/html-builder');
 var imageBuilder = require('./lib/image-builder');
 
-var main = function () {
+var packageJson = require('./package.json');
+
+var DEFAULT_WIDTH = 160;
+var DEFAULT_QUALITY = 10;
+
+var main = function () {  // eslint-disable-line max-statements
+
     // init arguments
     commander
         .option('-w, --width <n>', 'set preview image width', parseInt)
         .option('-q, --quality <n>', 'set preview image quality', parseInt)
         .option('-f, --file <html>', 'specify html file')
         .option('-d, --debug', 'debug mode')
-        .version(require('./package.json').version, '-v, --version')
+        .version(packageJson.version, '-v, --version')
         .parse(process.argv);
 
     // init log
     log.setLevel(commander.debug ? 0 : 2);
 
-    // init usage tracker
-    usageTracker.initialize({
-        owner: 'event-lab',
-        repo: 'preload-images',
-        number: 7,
-        token: require('./package.json')['usage-tracker-id'].split('').reverse().join(''),
-        log: log,
-        report: {
-            'preload-image-version': require('./package.json').version
-        }
-    });
     // report error
     process.on('uncaughtException', function (e) {
         new usageTracker.UsageTracker({
             owner: 'event-lab',
             repo: 'preload-images',
             number: 8,
-            token: require('./package.json')['usage-tracker-id'].split('').reverse().join(''),
+            token: packageJson['usage-tracker-id'].split('').reverse().join(''),
             report: {
-                'preload-image-version': require('./package.json').version
+                'preload-image-version': packageJson.version
             }
         }).on('end', function () {
-            process.exit(1);
+            process.exit(1); // eslint-disable-line no-process-exit
         }).on('err', function () {
-            process.exit(1);
+            process.exit(1); // eslint-disable-line no-process-exit
         }).send({
             // JSON.stringify(err) will convert err to `{}`
             // use error.stack for more details
@@ -67,20 +63,14 @@ var main = function () {
         log.error(e.stack);
         // still exit as uncaught exception
     });
-    // do not do that anymore
-    //// report usage
-    //usageTracker.send({
-    //    // event
-    //    event: 'used'
-    //});
 
     // main
     var htmlCount = 0;
     var imageCount = 0;
     var globString = commander.file || './**/*.html';
     var imagesOptions = {
-        width: commander.width || 160,
-        quality: commander.quality || 10
+        width: commander.width || DEFAULT_WIDTH,
+        quality: commander.quality || DEFAULT_QUALITY
     };
     var htmlFiles = glob.sync(globString, {
         ignore: [
@@ -95,16 +85,17 @@ var main = function () {
 
     if (htmlFiles.length === 0) {
         log.error('html not found', globString);
-        process.exit(1);
+        process.exit(1); // eslint-disable-line no-process-exit
     }
     log.debug('html found', htmlFiles.join(', '));
-    htmlFiles.forEach(function (htmlFile) {
-        var data = fs.readFileSync(htmlFile, 'utf-8');
+    htmlFiles.forEach(function (htmlFile) { // eslint-disable-line max-statements
+        var data = fs.readFileSync(htmlFile, 'utf-8'); // eslint-disable-line no-sync
         var html = data.toString();
         var $ = cheerio.load(html, {
             decodeEntities: false
         });
         var $images = $('img[data-preload]');
+
         if ($images.length > 0) {
             $images.each(function (index, img) {
                 imageBuilder(htmlFile, img, imagesOptions, function () {
@@ -112,8 +103,9 @@ var main = function () {
                 });
             });
             if (!$('script[data-preload]').length) {
-                var preloadJsData = fs.readFileSync(path.join(__dirname, './res/preload.js'), 'utf-8');
-                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(preloadJsData)).append('\n');
+                var preloadJsData = fs.readFileSync(path.join(__dirname, './res/preload.js'), 'utf-8'); // eslint-disable-line no-sync, max-len
+
+                $('body').append(cheerio.load('<script></script>')('script').attr('data-preload', '').text(preloadJsData)).append('\n'); // eslint-disable-line max-len
                 log.debug('script appended', htmlFile);
                 htmlBuilder(htmlFile, $);
             } else {
